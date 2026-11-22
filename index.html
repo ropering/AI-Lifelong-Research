@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="추천 질문으로 AI 대화를 시작하고, 짧은 영상으로 AI 활용법을 배워 보세요.">
+  <title>AI평생연구소</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #fbf8f0;
+      --ink: #262038;
+      --muted: #534a62;
+      --purple: #542b91;
+      --lavender: #eee5fc;
+      --lime: #dff594;
+      --line: #dcd3e5;
+      --measure: 72rem;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font: 1.125rem/1.7 "Noto Sans CJK KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      word-break: keep-all;
+      overflow-wrap: anywhere;
+    }
+
+    h1, h2, p, ul, ol, dl, dd { margin: 0; }
+    h1, h2 { line-height: 1.25; letter-spacing: -.055em; }
+    h2 { font-size: clamp(1.85rem, 4vw, 3rem); }
+    .wrap { width: min(var(--measure), 100% - 3rem); margin-inline: auto; }
+    .header { border-bottom: 1px solid var(--line); }
+    .header .wrap { padding-block: 1rem; }
+    .brand { display: inline-flex; align-items: center; gap: .65rem; font-weight: 800; letter-spacing: -.045em; }
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 2.25rem;
+      aspect-ratio: 1;
+      border-radius: .65rem;
+      background: var(--purple);
+      color: white;
+      font-size: .9rem;
+      letter-spacing: 0;
+    }
+
+    .hero { padding-block: clamp(3.5rem, 8vw, 7rem); }
+    .hero-grid { display: grid; grid-template-columns: 1.08fr 1fr; gap: clamp(2rem, 6vw, 5.5rem); align-items: center; }
+    h1 { font-size: clamp(2.4rem, 5vw, 4.8rem); }
+    h1 span { color: var(--purple); }
+    .intro { margin-top: 1.4rem; max-width: 29rem; color: var(--muted); font-size: clamp(1.15rem, 2.1vw, 1.45rem); }
+
+    .examples {
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      align-content: center;
+      min-height: 19rem;
+      padding: clamp(1.25rem, 4vw, 2.75rem);
+      border-radius: 1.75rem;
+      background: var(--lavender);
+      isolation: isolate;
+    }
+
+    .examples::before, .examples::after {
+      position: absolute;
+      z-index: -1;
+      width: 18rem;
+      aspect-ratio: 1;
+      border: 1px solid #cbb5e8;
+      border-radius: 50%;
+      content: "";
+    }
+    .examples::before { top: -10rem; right: -5rem; }
+    .examples::after { bottom: -11rem; left: -5rem; }
+    .examples h2 { margin-bottom: .8rem; font-size: 1.125rem; letter-spacing: -.025em; color: var(--purple); }
+    .example-list {
+      display: grid;
+      gap: .55rem;
+      padding: 1.15rem 1.35rem 1.15rem 2.45rem;
+      border: 1px solid #c6a9eb;
+      border-radius: 1rem;
+      background: #fff;
+    }
+
+    .examples.is-rotating .example-list {
+      display: grid;
+      align-items: center;
+      min-height: 5.65rem;
+      padding: .95rem 1.2rem;
+      list-style: none;
+      font-size: clamp(1.25rem, 2.25vw, 1.7rem);
+      font-weight: 750;
+      letter-spacing: -.045em;
+      line-height: 1.4;
+    }
+
+    .examples.is-rotating li { grid-area: 1 / 1; visibility: hidden; }
+    .examples.is-rotating .current { visibility: visible; animation: appear .28s ease-out both; }
+    @keyframes appear { from { opacity: .15; } to { opacity: 1; } }
+
+    .section { padding-block: clamp(3rem, 6vw, 5rem); border-top: 1px solid var(--line); }
+    .methods { background: #fffdf9; }
+    .method-grid, .result-grid, .step-grid { display: grid; gap: .9rem; margin-top: 1.5rem; }
+    .method-grid { grid-template-columns: repeat(3, 1fr); }
+    .result-grid, .step-grid { grid-template-columns: repeat(2, 1fr); }
+    .method-grid div, .result-grid div, .step-grid li {
+      padding: clamp(1.1rem, 3vw, 1.7rem);
+      border: 1px solid var(--line);
+      border-radius: 1rem;
+      background: #fff;
+    }
+
+    dt { margin-bottom: .35rem; font-weight: 800; }
+    dd, .explanation { color: var(--muted); }
+    .explanation { margin-top: 1.4rem; max-width: 52rem; }
+    .explanation strong { color: var(--purple); }
+    .result-grid div:last-child { background: var(--lavender); border-color: #cfb9eb; }
+    .step-grid { list-style: none; padding: 0; counter-reset: step; }
+    .step-grid li { display: flex; align-items: flex-start; gap: .9rem; counter-increment: step; }
+    .step-grid li::before {
+      display: grid;
+      flex: 0 0 2rem;
+      place-items: center;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: var(--lavender);
+      color: var(--purple);
+      font-weight: 800;
+      line-height: 1;
+      content: counter(step);
+    }
+
+    .apply { padding-block: 0 clamp(2.5rem, 6vw, 4rem); }
+    .apply-panel {
+      padding: clamp(1.5rem, 6vw, 4rem);
+      border-radius: 1.75rem;
+      background: var(--ink);
+      color: white;
+    }
+
+    .apply p { max-width: 44rem; margin-block: .9rem 1.6rem; color: #f0eaf9; }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      min-height: 3.5rem;
+      padding: .6rem 1.3rem;
+      border-radius: .7rem;
+      background: var(--lime);
+      color: var(--ink);
+      font-size: 1.15rem;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .button:hover { background: #c9eb65; text-decoration: underline; }
+    .button:focus-visible { outline: 3px solid #fff; outline-offset: 4px; }
+
+    @media (max-width: 46rem) {
+      .wrap { width: min(var(--measure), 100% - 2.25rem); }
+      .hero-grid, .method-grid, .result-grid, .step-grid { grid-template-columns: 1fr; }
+      .examples { min-height: 12rem; }
+      .button { width: 100%; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .examples.is-rotating .example-list {
+        display: grid;
+        padding: 1.15rem 1.35rem 1.15rem 2.45rem;
+        list-style: disc;
+        font-size: inherit;
+        font-weight: inherit;
+        letter-spacing: inherit;
+        line-height: inherit;
+      }
+      .examples.is-rotating li { grid-area: auto; visibility: visible; animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="wrap">
+      <span class="brand"><span class="brand-mark" aria-hidden="true">AI</span>AI평생연구소</span>
+    </div>
+  </header>
+  <main>
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <h1>AI를 써 보고 싶어도 <span>무엇을 어떻게</span> 물어볼지 막막합니다.</h1>
+          <p class="intro">AI평생연구소에서 추천 질문을 골라 바로 대화해 보세요.</p>
+        </div>
+        <div class="examples">
+          <h2>이렇게 써 보세요</h2>
+          <ul class="example-list">
+            <li>평소 궁금한 것 물어보기</li>
+            <li>구직에 필요한 정보 찾기</li>
+            <li>짧은 AI 활용 영상 보기</li>
+            <li>긴 안내문 쉽게 풀어보기</li>
+            <li>헷갈리는 스마트폰 기능 물어보기</li>
+            <li>가족에게 보낼 문자 다듬기</li>
+            <li>주말 나들이 계획 짜기</li>
+            <li>우리 동네 일자리 찾는 법 알아보기</li>
+            <li>내 경력으로 자기소개서 초안 쓰기</li>
+            <li>면접에서 나올 질문 연습하기</li>
+            <li>AI에게 질문하는 법 영상으로 배우기</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section methods">
+      <div class="wrap">
+        <h2>지금 쓰는 방법과 다른 점</h2>
+        <dl class="method-grid">
+          <div><dt>자녀에게 물어보기</dt><dd>자녀가 바쁘면 물어보기 어렵습니다.</dd></div>
+          <div><dt>유튜브 찾아보기</dt><dd>유튜브에는 광고와 관계없는 영상이 나옵니다.</dd></div>
+          <div><dt>지인에게 물어보기</dt><dd>지인에게는 자주 물어보기 어렵습니다.</dd></div>
+        </dl>
+        <p class="explanation">
+          그래서 원하는 정보를 원하는 시간에 얻기 어렵습니다.
+          <strong>AI평생연구소에서는 추천 질문을 골라 바로 대화할 수 있습니다.</strong>
+          짧은 영상으로 AI 활용 방법도 배울 수 있습니다.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <h2>이용 전과 후</h2>
+        <dl class="result-grid">
+          <div><dt>이용 전</dt><dd>ChatGPT에 접속해도 직접 질문을 입력하고 긴 답변을 읽기가 번거롭습니다.</dd></div>
+          <div><dt>이용 후</dt><dd>추천 질문으로 대화를 시작해 구직에 필요한 정보를 찾거나 평소 궁금한 것을 물어볼 수 있습니다.</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <h2>서비스 이용 순서</h2>
+        <ol class="step-grid">
+          <li>웹 앱을 쓸 수 있게 되면 문자로 받은 링크를 누르세요.</li>
+          <li>추천 질문을 하나 골라 바로 대화를 시작하세요. 구직 정보를 찾거나 평소 궁금한 것을 물어보세요.</li>
+          <li>답변에 참고할 사전 질문에 답하면 입력한 정보에 맞춘 AI 대화를 이용할 수 있습니다.</li>
+          <li>AI 활용 방법이 궁금하면 짧은 영상을 보세요.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="apply wrap">
+      <div class="apply-panel">
+        <h2>사전 신청</h2>
+        <p>AI 채팅을 써 보고 싶다면 사전 신청해 주세요. 웹 앱을 써 볼 수 있게 되면 문자로 링크를 보내드리고, 이용에 도움이 되는 소식이 있을 때 안내해 드립니다.</p>
+        <a class="button" href="https://google.com">사전 신청하기 <span aria-hidden="true">→</span></a>
+      </div>
+    </section>
+  </main>
+  <script>
+    const examples = document.querySelector('.examples');
+    const phrases = [...examples.querySelectorAll('li')];
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let rotation;
+
+    function updateRotation() {
+      window.clearInterval(rotation);
+      examples.classList.toggle('is-rotating', !motion.matches);
+      phrases.forEach(phrase => phrase.classList.remove('current'));
+
+      if (motion.matches) return;
+
+      let current = 0;
+      phrases[current].classList.add('current');
+      rotation = window.setInterval(() => {
+        phrases[current].classList.remove('current');
+        current = (current + 1) % phrases.length;
+        phrases[current].classList.add('current');
+      }, 2000);
+    }
+
+    motion.addEventListener('change', updateRotation);
+    updateRotation();
+  </script>
+</body>
+</html>
